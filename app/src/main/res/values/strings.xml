@@ -1,4 +1,25 @@
 <resources>
     <string name="app_name">AyoMelangkah</string>
     <string name="action_settings">Settings</string>
+
+    <string name="top_title">Ayo Melangkah !!</string>
+    <string name="label_description">Jalani hidup lebih sehat dengan melangkah 10.000 kali setiap hari.</string>
+    <string name="label_insctuction">Tekan tombol "MULAI", aplikasi akan menghitung setiap langkah anda. Pilih "BERHENTI" untuk menghentikan penghitungan langkah</string>
+    <string name="label_speed">Speed :</string>
+    <string name="label_count">Count :</string>
+    <string name="label_status">Status :</string>
+
+    <string name="value_calorie">Calorie</string>
+    <string name="value_distance">Distance</string>
+    <string name="value_speed">Speed</string>
+    <string name="value_count">Count</string>
+    <string name="value_status">Status</string>
+
+    <string name="start">MULAI</string>
+    <string name="stop">BERHENTI</string>
+
+    <string-array name="mode_pedometer">
+        <item>Realtime</item>
+        <item>Periodic</item>
+    </string-array>
 </resources>
