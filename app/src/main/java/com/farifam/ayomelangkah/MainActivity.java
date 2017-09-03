@@ -2,6 +2,7 @@ package com.farifam.ayomelangkah;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements PedometerCallback
     TextView res_result;
     TextView res_residu;
     Button btnStart;
+    int total_step=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,35 +57,11 @@ public class MainActivity extends AppCompatActivity implements PedometerCallback
         pedometerHelper.setModePedometer(PedometerHelper.MODE_PEDOMETER_REALTIME);
 
         res = (LinearLayout)findViewById(R.id.res);
+        res.setVisibility(View.GONE);
         res_title=(TextView)findViewById(R.id.res_title);
         res_result=(TextView)findViewById(R.id.res_result);
         res_residu=(TextView)findViewById(R.id.res_residu);
         btnStart = (Button)findViewById(R.id.btn_start);
-
-        spinMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i)
-                {
-                    case PedometerHelper.MODE_PEDOMETER_REALTIME:
-                        pedometerHelper.setModePedometer(PedometerHelper.MODE_PEDOMETER_REALTIME);
-                        break;
-                    case PedometerHelper.MODE_PEDOMETER_PERIODIC:
-                        pedometerHelper.setModePedometer(PedometerHelper.MODE_PEDOMETER_PERIODIC);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,22 +79,18 @@ public class MainActivity extends AppCompatActivity implements PedometerCallback
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -163,37 +137,42 @@ public class MainActivity extends AppCompatActivity implements PedometerCallback
 
     @Override
     public void motionStarted() {
+
+        res.setVisibility(View.VISIBLE);
         btnStart.setText(R.string.stop);
-        enableSpinner(false);
     }
 
     @Override
     public void motionStopped() {
+        res.setVisibility(View.GONE);
         btnStart.setText(R.string.start);
-        enableSpinner(true);
     }
 
     @Override
     public void updateInfo(SmotionPedometer.Info info) {
         SmotionPedometer.Info pedometerInfo = info;
-        System.out.println("HelloMotion PedometerHelper");
-        double calorie = info.getCalorie();
-        double distance = info.getDistance();
-        double speed = info.getSpeed();
+//        System.out.println("HelloMotion PedometerHelper");
+//        double calorie = info.getCalorie();
+//        double distance = info.getDistance();
+//        double speed = info.getSpeed();
         long count = info.getCount(SmotionPedometer.Info.COUNT_TOTAL);
-        int status = info.getStatus();
+//        int status = info.getStatus();
+        if(count>=10000){
+            res_title.setText("Hore! Langkah kamu telah mencapai");
+            res_residu.setText("Selamat telah menjalani hidup sehat hari ini");
+        }
+        else{
 
-        textCalorie.setText(String.valueOf(calorie));
-        textDistance.setText(String.valueOf(distance));
-        textSpeed.setText(String.valueOf(speed));
-        textCount.setText(String.valueOf(count));
-        textStatus.setText(getStatus(status));
+            res_residu.setText("kamu butuh "+ Long.toString(10000-count) +" langkah lagi untuk mencapai 10.000!");
+        }
 
-        Log.d("Burn", "onChanged: "+ " calorie "+calorie+
-                " distance"+distance+
-                " speed"+speed+
-                " count"+count+
-                " status"+status);
+        res_result.setText(Long.toString(count));
+
+//        Log.d("Burn", "onChanged: "+ " calorie "+calorie+
+//                " distance"+distance+
+//                " speed"+speed+
+//                " count"+count+
+//                " status"+status);
     }
 
     void showErrorDialog(String title,String message){
@@ -208,9 +187,5 @@ public class MainActivity extends AppCompatActivity implements PedometerCallback
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-    }
-
-    void enableSpinner(boolean enabled){
-        spinMode.setEnabled(enabled);
     }
 }

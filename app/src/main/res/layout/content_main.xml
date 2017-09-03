@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
                     android:textColor="#ffffff"
-                    android:text="tinggal 8102 langkah lagi untuk mencapai 10.000!"
+                    android:text="kamu butuh 8102 langkah lagi untuk mencapai 10.000!"
                     android:textStyle="bold"
                     />
 
